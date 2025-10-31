@@ -37,7 +37,7 @@ jobs:
         run: uv run ruff format --check src tests
 
       - name: Notebook lint
-        run: uv run nbqa ruff check src/
+        run: uv run nbqa ruff src/
 
       - name: Notebook format check
         run: uv run nbqa black --check src/
