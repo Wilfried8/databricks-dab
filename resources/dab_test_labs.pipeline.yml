@@ -3,7 +3,7 @@ resources:
   pipelines:
     dab_test_labs_pipeline:
       name: dab_test_labs_pipeline
-      catalog: dab_dev
+      catalog: dab_${bundle.target}
       schema: dab_test_labs_${bundle.target}
       serverless: true
       libraries:
