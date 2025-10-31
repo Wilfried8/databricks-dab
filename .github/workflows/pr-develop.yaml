@@ -1,0 +1,64 @@
+# This workflow runs the project's automated tests for pull requests targeting
+# the develop branch.
+name: 'Dev tests only'
+
+# Ensure that only a single job or workflow using the same concurrency group runs at a time.
+concurrency: 1
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    branches:
+      - develop
+
+jobs:
+  lint:
+    name: 'Lint and format'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - uses: astral-sh/setup-uv@v3
+
+      - name: Install lint dependencies
+        run: uv sync --group lint
+
+      - name: Ruff lint
+        run: uv run ruff check src tests
+
+      - name: Ruff format check
+        run: uv run ruff format --check src tests
+
+      - name: Notebook lint
+        run: uv run nbqa ruff check src/
+
+      - name: Notebook format check
+        run: uv run nbqa black --check src/
+
+  tests:
+    name: 'Run tests'
+    runs-on: ubuntu-latest
+    needs:
+      - lint
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - uses: astral-sh/setup-uv@v3
+
+      - name: Install project with dev dependencies
+        run: uv sync --dev
+
+      - name: Run pytest suite
+        run: uv run pytest

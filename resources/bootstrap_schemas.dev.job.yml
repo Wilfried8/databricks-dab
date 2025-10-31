@@ -1,0 +1,19 @@
+# The main job for dab_test_labs.
+resources:
+  jobs:
+    dab_test_labs_bootstrap_schemas_job:
+      name: dab_test_labs_bootstrap_schemas_job
+      tasks:
+        - task_key: bootstrap_schemas
+          notebook_task:
+            notebook_path: ../src/setup_schema.ipynb
+      # A list of task execution environment specifications that can be referenced by tasks of this job.
+      environments:
+        - environment_key: default
+
+          # Full documentation of this spec can be found at:
+          # https://docs.databricks.com/api/workspace/jobs/create#environments-spec
+          spec:
+            environment_version: "2"
+            dependencies:
+              - ../dist/*.whl

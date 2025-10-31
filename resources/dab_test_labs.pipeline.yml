@@ -1,0 +1,14 @@
+# The main pipeline for dab_test_labs
+resources:
+  pipelines:
+    dab_test_labs_pipeline:
+      name: dab_test_labs_pipeline
+      catalog: dab_dev
+      schema: dab_test_labs_${bundle.target}
+      serverless: true
+      libraries:
+        - notebook:
+            path: ../src/pipeline.ipynb
+
+      configuration:
+        bundle.sourcePath: ${workspace.file_path}/src
