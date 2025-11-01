@@ -34,7 +34,11 @@ jobs:
       # Deploy the bundle to the "prod" target as defined in the bundle's settings file.
       - run: databricks bundle deploy
         env:
-          DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
+          # DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
+          # DATABRICKS_BUNDLE_ENV: prod
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST_PROD }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_SP_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_SP_CLIENT_SECRET }}
           DATABRICKS_BUNDLE_ENV: prod
 
   pipeline_update:
@@ -58,5 +62,9 @@ jobs:
       # Run the Databricks workflow named "my-job" as defined in the bundle that was just deployed.
       - run: databricks bundle run dab_test_labs_job --refresh-all
         env:
-          DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
+          # DATABRICKS_TOKEN: ${{ secrets.SP_TOKEN }}
+          # DATABRICKS_BUNDLE_ENV: prod
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST_STAGING }}
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_SP_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_SP_CLIENT_SECRET }}
           DATABRICKS_BUNDLE_ENV: prod
